@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.purchase}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                    <!--**********************************
+            Content body start
+        ***********************************-->
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.edit_purchase %> </h4>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"
+                                                onclick="history.back()"><i class="la la-undo"></i> <%= language.go_back %></button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-validation">
+
+                                                <form class="needs-validation"
+                                                    action="/all_purchases/view/<%= purchases._id %>" method="post" id="form">
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.invoice %> </label>
+                                                                <input type="text" name="invoice" class="form-control" value="<%= purchases.invoice %>"
+                                                                    id="invoice" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.supplier %> </label>
+                                                                <select class="form-control" name="suppliers"
+                                                                    id="suppliers" required>
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% suppliers.forEach((suppliers)=> { %>
+                                                                        <option <%=purchases.suppliers==suppliers.name
+                                                                        ? "selected" : "" %>>
+                                                                            <%= suppliers.name %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.date %> </label>
+                                                                <input type="date" name="date" class="form-control" value="<%= purchases.date %>"
+                                                                    id="date" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.warehouse %> </label>
+
+                                                                <select class="form-control" name="warehouse_name"
+                                                                    id="warehouse_name" required>
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% warehouse.forEach((warehouse)=> { %>
+                                                                        <option <%=purchases.warehouse_name==warehouse.name
+                                                                        ? "selected" : "" %>>
+                                                                            <%= warehouse.name %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.products %> </label>
+                                                                <select class="edit_purchases_product" name="product" id="single-select">
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% product.forEach((product)=> { %>
+                                                                        <option <%=purchases.product_name==product.name
+                                                                        ? "selected" : "" %>>
+                                                                            <%= product.name %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table primary-table-bordered">
+                                                                <thead class="thead-primary">
+                                                                    <tr>
+                                                                        <th scope="col"><%= language.name %> </th>
+                                                                        <th scope="col"><%= language.quantity %> </th>
+                                                                        <th scope="col"><%= language.price %> </th>
+                                                                        <th scope="col"><%= language.total %> </th>
+                                                                        <th scope="col"><%= language.action %> </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblPage">
+                                                                    <% purchases.product.forEach((users)=> { %>
+
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input type="text" name="product_name" class="form-control product_name" value="<%= users.product_name %>" readonly>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <% product.forEach((data) => { %>
+                                                                                    <% if (data.name == users.product_name) { %>
+
+                                                                                        <div class="input-group"> 
+                                                                                            <input type="number" name="quantity" class="form-control quantity" id="edit_quantity" step="0.01" value="<%= users.quantity %>" min="0" required> 
+                                                                                            <span class="input-group-text"><%= data.unit %></span> 
+                                                                                        </div>
+                                                                                    <% } %>
+                                                                                <% }) %>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <div class="input-group"> 
+                                                                                    <input type="number" name="price" class="form-control price" step="0.01" id="edit_price" value="<%= users.price %>" min="0" required> 
+                                                                                    <span class="input-group-text"><%= master_shop[0].currency %></span> 
+                                                                                </div>
+                                                                            </td>
+ 
+                                                                            <td>
+                                                                                <div class="input-group"> 
+                                                                                    <input type="number" name="total" class="form-control total" step="0.01" id="edit_total" value="<%= users.total %>" readonly> 
+                                                                                    <span class="input-group-text"><%= master_shop[0].currency %></span> 
+                                                                                </div>
+                                                                            </td>
+
+                                                                            <td>
+                                                                                <button type="button" class="btn btn-square btn-outline-danger" id="remove" disabled>Remove</button>
+                                                                            </td>
+
+                                                                        </tr>
+
+                                                                    <% }) %>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="note"><%= language.note %> </label>
+                                                                <input type="text" class="form-control" value="<%= purchases.note %>"
+                                                                    placeholder="note" id="note" name="note">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.total_price %></label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"> <%= master_shop[0].currency %></span>
+                                                                            <input type="number"
+                                                                                class="form-control"
+                                                                                id="edit_total_amount" value="<%= purchases.total_amount %>"
+                                                                                name="total_amount" step="0.01" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="discount"><%= language.discount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"> <%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="discount"
+                                                                                class="form-control edit_purchase" value="<%= purchases.discount %>"
+                                                                                step="0.01" id="edit_discount" min="0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label><%= language.payable_amount %></label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"> <%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="payable"
+                                                                                class="form-control" value="<%= purchases.payable %>"
+                                                                                id="edit_payable" step="0.01" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label><%= language.paid_amount %></label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"> <%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="paid_amount"
+                                                                                value="<%= purchases.paid_amount %>"
+                                                                                class="form-control" step="0.01" id="edit_paid_amount"
+                                                                                readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label><%= language.due_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"> <%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="due_amount" id="edit_due_amount"
+                                                                                class="form-control" step="0.01" value="<%= purchases.due_amount %>" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <button class="btn btn-primary" type="submit"
+                                                            id="submit"><%= language.submit %> </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--**********************************
+            Content body end
+        ***********************************-->
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!-- start Toastr -->
+    <%- include('./partials/toastr'); -%>
+        <!-- End Toastr -->
+
+        <!--**********************************
+        Scripts
+    ***********************************-->
+
+        <%- include('./partials/script'); -%>
+
+            <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>

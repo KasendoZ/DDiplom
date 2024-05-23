@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.transfer}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                    <!--**********************************
+            Content body start
+        ***********************************-->
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.edit_transfers %> </h4>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"
+                                                onclick="history.back()"><i class="la la-undo"></i> <%= language.go_back %></button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-validation">
+
+                                                <form class="needs-validation" action="/transfer/view/<%= transfer._id %>"
+                                                    method="post" id="form">
+
+                                                    <div class="row mb-3">
+
+                                                        <div class="col-xl-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.date %> <span
+                                                                        class="text-red">*</span></label>
+                                                                <input type="date" name="date" class="form-control"
+                                                                    id="date" value="<%= transfer.date %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.from_warehouse %> <span
+                                                                        class="text-red">*</span></label>
+                                                                <input type="text" name="from_warehouse" class="form-control"
+                                                                    id="transfer_from_warehouse" value="<%= transfer.from_warehouse %>" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-4 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.to_warehouse %> <span
+                                                                        class="text-red">*</span></label>
+
+                                                                <input type="text" name="to_warehouse" class="form-control"
+                                                                    id="to_warehouse" value="<%= transfer.to_warehouse %>" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group" id="transfer_addproduct">
+                                                                <label for="invoice_no"><%= language.products %> </label>
+                                                                <select class="add_transfer_product" name="product" id="single-select">
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% stock.forEach((warehouse)=> { %>
+                                                                        <option>
+                                                                            <%= warehouse._id %>
+                                                                        </option>
+                                                                    <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table primary-table-bordered">
+                                                                <thead class="thead-primary">
+                                                                    <tr>
+                                                                        <th scope="col"><%= language.name %></th>
+                                                                        <th scope="col"><%= language.in_stock %></th>
+                                                                        <th scope="col"><%= language.quantity %> </th>
+                                                                        <th scope="col"><%= language.action %> </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblPage">
+                                                                    <% transfer.product.forEach((transfer)=> { %>
+                                                                    <tr>
+                                                                        <td class="align-top">
+                                                                            <input type="text" name="product_name"
+                                                                                id="product_name" value="<%= transfer.product_name %>"
+                                                                                class="form-control product_name" readonly>
+                                                                        </td>
+
+                                                                        <% unit.forEach((unit)=> { %>
+                                                                        <% if (unit.name == transfer.product_name) { %>
+    
+                                                                            <% stock.forEach((stock)=> { %>
+                                                                                <% if (transfer.product_name == stock._id) { %>
+
+                                                                                    <td class="align-top">
+                                                                                        <div class="input-group"> 
+                                                                                            <input type="number" name="stock" class="form-control stock" id="stock" value="<%= stock.product_stock %>" readonly> 
+                                                                                            <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                        </div>
+                                                                                    </td>
+
+                                                                                <% } %>
+                                                                            <% }) %>
+
+                                                                            <td class="align-top">
+                                                                                <div class="input-group"> 
+                                                                                    <input type="number" name="quantity" class="form-control quantity" id="transfer_quantity" value="<%= transfer.quantity %>" min="0" required> 
+                                                                                    <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                </div>
+                                                                                <p class="error text-red" name="error"></p>
+                                                                            </td>
+                                                                        <% } %>
+                                                                        <% }) %>
+
+                                                                        <td class="align-top"> 
+                                                                            <button type="button" class="btn btn-square btn-outline-danger" id="remove" disabled>Remove</button> 
+                                                                        </td>
+                                                                    </tr>
+                                                                    <% }) %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label for="note"><%= language.note %></label>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="note" value="<%= transfer.note %>" id="note" name="note">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <button class="btn btn-primary" type="submit"
+                                                            id="submit"><%= language.submit %></button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--**********************************
+            Content body end
+        ***********************************-->
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!-- start Toastr -->
+    <%- include('./partials/toastr'); -%>
+        <!-- End Toastr -->
+
+        <!--**********************************
+        Scripts
+    ***********************************-->
+
+        <%- include('./partials/script'); -%>
+
+            <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>

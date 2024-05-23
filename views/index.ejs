@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.dashboard}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+
+                    <!--**********************************
+            Content body start
+        ***********************************-->
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <div class="row">
+
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card">
+                                        <div class="card-body p-4">
+                                            <div class="media ai-icon">
+                                                <span class="me-3 bgl-primary text-primary">
+                                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g>
+                                                          <g> 
+                                                            <path d="M5.52377 7C9.41427 5.74386 13.9724 5.45573 16 5.5C18.0276 5.54427 18.8831 6.2663 19.5 7.5C20.5 9.5 20.289 14.4881 18.5 16.0871C16.712 17.6861 9.33015 17.8381 6.87015 16.0871C4.27115 14.2361 5.629 9.192 5.544 5.743C5.595 3.813 3.5 3.5 3.5 3.5" stroke="#0081EE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M13 10.5H15.773" stroke="#0081EE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.26399 20.1274C7.56399 20.1274 7.80799 20.3714 7.80799 20.6714C7.80799 20.9724 7.56399 21.2164 7.26399 21.2164C6.96299 21.2164 6.71899 20.9724 6.71899 20.6714C6.71899 20.3714 6.96299 20.1274 7.26399 20.1274Z" fill="#0081EE" stroke="#0081EE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5954 20.1274C17.8964 20.1274 18.1404 20.3714 18.1404 20.6714C18.1404 20.9724 17.8964 21.2164 17.5954 21.2164C17.2954 21.2164 17.0514 20.9724 17.0514 20.6714C17.0514 20.3714 17.2954 20.1274 17.5954 20.1274Z" fill="#0081EE" stroke="#0081EE" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                          </g>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+
+                                                <div class="media-body">
+                                                    <p class="mb-1"><%= language.sales %></p>
+                                                    <% if( sale == undefined ) { %>
+
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0">0 <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+    
+                                                            <h4 class="mb-0"><%= master_shop[0].currency %> 0 </h4>
+                                                        <% } %>
+                                                        
+                                                    <% } else { %>
+
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0"><%= sale.total_price.toLocaleString() %> <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+    
+                                                            <h4 class="mb-0"><%= master_shop[0].currency %> <%= sale.total_price.toLocaleString() %> </h4>
+                                                        <% } %>
+
+                                                    <% } %>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card">
+                                        <div class="card-body p-4">
+                                            <div class="media ai-icon">
+                                                <span class="me-3 bgl-warning text-warning">
+                                                    <i class="las la-undo"></i>
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="mb-1"><%= language.sales_return %></p>
+                                                    <% if( sales_return == undefined ) { %>
+
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0">0 <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> 0 </h4>
+                                                        <% } %>
+
+                                                    <% } else { %>
+                                                            
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0"><%= sales_return.total.toLocaleString() %> <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> <%= sales_return.total.toLocaleString() %> </h4>
+                                                        <% } %>
+
+                                                    <% } %>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card">
+                                        <div class="card-body  p-4">
+                                            <div class="media ai-icon">
+                                                <span class="me-3 bgl-danger text-danger">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g> 
+                                                          <g> 
+                                                            <path d="M15.7499 9.47167V6.43967C15.7549 4.35167 14.0659 2.65467 11.9779 2.64967C9.88887 2.64567 8.19287 4.33467 8.18787 6.42267V9.47167" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M2.94995 14.2074C2.94995 8.91344 5.20495 7.14844 11.969 7.14844C18.733 7.14844 20.988 8.91344 20.988 14.2074C20.988 19.5004 18.733 21.2654 11.969 21.2654C5.20495 21.2654 2.94995 19.5004 2.94995 14.2074Z" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                          </g>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="mb-1"><%= language.purchase %></p>
+
+                                                    <% if( purchases == undefined ) { %>
+
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0">0 <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> 0</h4>
+                                                        <% } %>
+
+                                                    <% } else { %>
+                                                                
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0"><%= purchases.total_amount.toLocaleString() %> <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> <%= purchases.total_amount.toLocaleString() %></h4>
+                                                        <% } %>
+
+                                                    <% } %>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card">
+                                        <div class="card-body p-4">
+                                            <div class="media ai-icon">
+                                                <span class="me-3 bgl-success text-success">
+                                                    <i class="las la-share"></i>
+                                                </span>
+
+
+
+                                                <div class="media-body">
+                                                    <p class="mb-1"><%= language.purchase_return %></p>
+
+                                                    <% if( purchases_return == undefined ) { %>
+
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0">0 <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> 0</h4>
+                                                        <% } %>
+
+                                                    <% } else { %>
+                                                                
+                                                        <% if(master_shop[0].currency_placement == 1) { %>
+    
+                                                            <h4 class="mb-0"><%= purchases_return.total.toLocaleString() %> <%= master_shop[0].currency %></h4>
+                                                        <% } else { %>
+                                                                
+                                                            <h4 class="mb-0"> <%= master_shop[0].currency %> <%= purchases_return.total.toLocaleString() %></h4>
+                                                        <% } %>
+
+                                                    <% } %>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.latest_purchases %></h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="thead-info">
+                                                        <tr>
+                                                            <th scope="col"><%= language.date %></th>
+                                                            <th scope="col"><%= language.invoice %></th>
+                                                            <th scope="col"><%= language.supplier %></th>
+                                                            <th scope="col"><%= language.amount %></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% purchases_table.forEach((user)=> { %>
+
+                                                            <% if(master_shop[0].currency_placement == 1) { %>
+
+                                                                <tr>
+                                                                    <th><%= user.date %></th>
+                                                                    <td><%= user.invoice %></td>
+                                                                    <td><%= user.suppliers %></td>
+                                                                    <td><%= user.total_amount.toLocaleString() %> <%= master_shop[0].currency %></td>
+                                                                </tr>
+                                                            <% } else { %>
+                                                                        
+                                                                <tr>
+                                                                    <th><%= user.date %></th>
+                                                                    <td><%= user.invoice %></td>
+                                                                    <td><%= user.suppliers %></td>
+                                                                    <td> <%= master_shop[0].currency %> <%= user.total_amount.toLocaleString() %></td>
+                                                                </tr>
+                                                            <% } %>
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.latest_sales %></h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead class="thead-info">
+                                                        <tr>
+                                                            <th scope="col"><%= language.date %></th>
+                                                            <th scope="col"><%= language.invoice %></th>
+                                                            <th scope="col"><%= language.customer %></th>
+                                                            <th scope="col"><%= language.amount %></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% sales_table.forEach((user)=> { %>
+
+                                                            <% if(master_shop[0].currency_placement == 1) { %>
+
+                                                                <tr>
+                                                                    <th><%= user.date %></th>
+                                                                    <td><%= user.invoice %></td>
+                                                                    <td><%= user.customer %></td>
+                                                                    <td><%= user.total.toLocaleString() %> <%= master_shop[0].currency %></td>
+                                                                </tr>
+                                                            <% } else { %>
+                                                                        
+                                                                <tr>
+                                                                    <th><%= user.date %></th>
+                                                                    <td><%= user.invoice %></td>
+                                                                    <td><%= user.customer %></td>
+                                                                    <td> <%= master_shop[0].currency %> <%= user.total_price.toLocaleString() %></td>
+                                                                </tr>
+                                                            <% } %>
+
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card bg-danger">
+                                        <div class="card-body  p-4">
+                                            <div class="media">
+                                                <span class="me-3">
+                                                    <i class="lab la-buffer"></i>
+                                                </span>
+                                                <div class="media-body text-white text-end">
+                                                    <p class="mb-1"><%= language.categories %></p>
+                                                    <h3 class="text-white"><%= categories %></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card bg-success">
+                                        <div class="card-body p-4">
+                                            <div class="media">
+                                                <span class="me-3">
+                                                    <i class="lab la-product-hunt"></i>
+                                                </span>
+                                                <div class="media-body text-white text-end">
+                                                    <p class="mb-1"><%= language.products %></p>
+                                                    <h3 class="text-white"><%= product %></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card bg-primary">
+                                        <div class="card-body p-4">
+                                            <div class="media">
+                                                <span class="me-3">
+                                                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g> 
+                                                          <g> 
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55851 21.4562C5.88651 21.4562 2.74951 20.9012 2.74951 18.6772C2.74951 16.4532 5.86651 14.4492 9.55851 14.4492C13.2305 14.4492 16.3665 16.4342 16.3665 18.6572C16.3665 20.8802 13.2505 21.4562 9.55851 21.4562Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.55849 11.2776C11.9685 11.2776 13.9225 9.32356 13.9225 6.91356C13.9225 4.50356 11.9685 2.54956 9.55849 2.54956C7.14849 2.54956 5.19449 4.50356 5.19449 6.91356C5.18549 9.31556 7.12649 11.2696 9.52749 11.2776H9.55849Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M16.8013 10.0789C18.2043 9.70388 19.2383 8.42488 19.2383 6.90288C19.2393 5.31488 18.1123 3.98888 16.6143 3.68188" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M17.4608 13.6536C19.4488 13.6536 21.1468 15.0016 21.1468 16.2046C21.1468 16.9136 20.5618 17.6416 19.6718 17.8506" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                          </g>
+                                                        </g>
+                                                    </svg>
+                                                </span>
+                                                <div class="media-body text-white text-end">
+                                                    <p class="mb-1"><%= language.supplier %></p>
+                                                    <h3 class="text-white"><%= suppliers %></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-xxl-6 col-lg-6 col-sm-6">
+                                    <div class="widget-stat card bg-warning">
+                                        <div class="card-body p-4">
+                                            <div class="media">
+                                                <span class="me-3">
+                                                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <g> 
+                                                          <g> 
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9724 20.3683C8.73343 20.3683 5.96643 19.8783 5.96643 17.9163C5.96643 15.9543 8.71543 14.2463 11.9724 14.2463C15.2114 14.2463 17.9784 15.9383 17.9784 17.8993C17.9784 19.8603 15.2294 20.3683 11.9724 20.3683Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.9725 11.4488C14.0985 11.4488 15.8225 9.72576 15.8225 7.59976C15.8225 5.47376 14.0985 3.74976 11.9725 3.74976C9.84645 3.74976 8.12245 5.47376 8.12245 7.59976C8.11645 9.71776 9.82645 11.4418 11.9455 11.4488H11.9725Z" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M18.3622 10.3915C19.5992 10.0605 20.5112 8.93254 20.5112 7.58954C20.5112 6.18854 19.5182 5.01854 18.1962 4.74854" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M18.9431 13.5444C20.6971 13.5444 22.1951 14.7334 22.1951 15.7954C22.1951 16.4204 21.6781 17.1014 20.8941 17.2854" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M5.58372 10.3915C4.34572 10.0605 3.43372 8.93254 3.43372 7.58954C3.43372 6.18854 4.42772 5.01854 5.74872 4.74854" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                            <path d="M5.00176 13.5444C3.24776 13.5444 1.74976 14.7334 1.74976 15.7954C1.74976 16.4204 2.26676 17.1014 3.05176 17.2854" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                          </g>
+                                                        </g>
+                                                      </svg>
+                                                </span>
+                                                <div class="media-body text-white text-end">
+                                                    <p class="mb-1"><%= language.customer %></p>
+                                                    <h3 class="text-white"><%= customer %></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+      <!-- start Toastr -->
+      <%- include('./partials/toastr'); -%>
+      <!-- End Toastr -->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <%- include('./partials/script'); -%>
+
+        <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>

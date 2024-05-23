@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.sales_return}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.edit_sale_return %> </h4>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"
+                                                onclick="history.back()"><i class="la la-undo"></i> <%= language.go_back %> </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-validation">
+
+                                                <form class="needs-validation"
+                                                    action="/sales_return/view/<%= user._id %>"
+                                                    method="post" id="form">
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.invoice %> </label>
+                                                                <input type="text" name="invoice"
+                                                                    value="<%= user.invoice %>" class="form-control"
+                                                                    id="invoice" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.customer %> </label>
+                                                                <input type="text" name="customer"
+                                                                    value="<%= user.customer %>" class="form-control"
+                                                                    id="customer" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.date %> </label>
+                                                                <input type="date" name="date" class="form-control"
+                                                                    id="date" value="<%= user.date %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.warehouse %> </label>
+                                                                <input type="text" name="warehouse_name"
+                                                                    value="<%= user.warehouse_name %>" class="form-control"
+                                                                    id="warehouse_name" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-xl-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table primary-table-bordered">
+                                                                <thead class="thead-primary">
+                                                                    <tr>
+                                                                        <th scope="col"><%= language.name %> </th>
+                                                                        <th scope="col"><%= language.sale_qty %> </th>
+                                                                        <th scope="col"><%= language.in_stock %> </th>
+                                                                        <th scope="col"><%= language.return_qty %>  <span class="text-red">*</span></th>
+                                                                        <th scope="col"><%= language.price %> </th>
+                                                                        <th scope="col"><%= language.total %> </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <% user.return_sale.forEach((user)=> { %>
+                                                                    <tr>
+                                                                        <td scope="col" class="align-top">
+                                                                            <input type="text" name="product_name"
+                                                                                class="form-control" id="product_name"
+                                                                                value="<%= user.product_name %>"
+                                                                                readonly>
+                                                                        </td>
+
+                                                                        <% unit.forEach((unit)=> { %>
+                                                                            <% if (unit.name == user.product_name) { %>
+
+                                                                        <td scope="col" class="align-top">
+                                                                            <div class="input-group">
+                                                                                <input type="number" name="sale_qty" class="form-control sale_qty" id="sale_qty" value="<%= user.sale_qty %>" readonly> 
+                                                                                <span class="input-group-text"><%= unit.unit %></span> 
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td scope="col" class="align-top">
+                                                                            <% stock.forEach((stock)=> { %>
+                                                                                <% if (user.product_name == stock._id) { %>
+                                                                                    <div class="input-group">
+                                                                                        <input type="number" name="stock_quantity" class="form-control stock" id="stock_quantity" value="<%= stock.product_stock %>" readonly> 
+                                                                                        <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                    </div>
+                                                                                <% } %>
+                                                                            <% }) %>
+                                                                        </td>
+
+                                                                        <td scope="col" class="align-top">
+                                                                            <div class="input-group">
+                                                                                <input type="number" name="return_qty" class="form-control return_qty" id="sale_return_qty" value="<%= user.return_qty %>" min="0" required> 
+                                                                                <span class="input-group-text"><%= unit.unit %></span> 
+                                                                            </div>
+                                                                            <p class="error text-red" name="error"></p>
+                                                                        </td>
+
+                                                                            <% } %>
+                                                                        <% }) %>
+
+                                                                        <td scope="col" class="align-top">
+                                                                            <div class="input-group">
+                                                                                <input type="number" name="price" class="form-control price" id="sale_price" value="<%= user.price %>"step="0.01" readonly> 
+                                                                                <span class="input-group-text"><%= master_shop[0].currency %></span> 
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td scope="col" class="align-top">
+                                                                            <div class="input-group">
+                                                                                <input type="number" name="total" class="form-control total" id="sale_total" value="<%= user.total %>"step="0.01" readonly> 
+                                                                                <span class="input-group-text"><%= master_shop[0].currency %></span> 
+                                                                            </div>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                    <% }) %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="note"><%= language.return_note %> </label>
+                                                                <input type="text" class="form-control" id="note"
+                                                                    placeholder="Enter Note" name="note" value="<%= user.note %>">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="row">
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.total_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" value="<%= user.total_amount %>"
+                                                                                class="form-control multiplyBy" step="0.01"
+                                                                                id="total_amount" name="total_amount" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.discount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" class="form-control"
+                                                                                id="sale_return_discount" value="<%= user.discount %>" step="0.01"
+                                                                                name="discount" min="0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.payabl_to_customer %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" class="form-control" step="0.01"
+                                                                                id="payable_to_customer" value="<%= user.payable_to_customer %>"
+                                                                                name="payable_to_customer" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.paid_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" class="form-control" step="0.01"
+                                                                                id="paid_amount" value="<%= user.paid_amount %>"
+                                                                                name="paid_amount" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.due_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" class="form-control" step="0.01"
+                                                                                id="due_amount" value="<%= user.due_amount %>"
+                                                                                name="due_amount" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <button class="btn btn-primary" type="submit"
+                                                            id="submit"><%= language.submit %> </button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!-- start Toastr -->
+    <%- include('./partials/toastr'); -%>
+        <!-- End Toastr -->
+
+        <!--**********************************
+        Scripts
+    ***********************************-->
+
+        <%- include('./partials/script'); -%>
+
+            <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.sales}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                    <!--**********************************
+            Content body start
+        ***********************************-->
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.add_new_sales %></h4>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"
+                                                onclick="history.back()"><i class="la la-undo"></i> <%= language.go_back %> </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-validation">
+
+                                                <form class="needs-validation" action="/all_sales/view/add_sales"
+                                                    method="post" id="form">
+
+                                                    <div class="row mb-3">
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.invoice %> <span class="text-red">*</span></label>
+                                                                <input type="text" name="invoice" class="form-control"
+                                                                    id="invoice" value="<%= invoice %>" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.customer %>  <span class="text-red">*</span></label>
+                                                                <select class="form-control" name="customer"
+                                                                    id="customer" required>
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% customer.forEach((customer)=> { %>
+                                                                        <option value="<%= customer.name %>">
+                                                                            <%= customer.name %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.date %> <span class="text-red">*</span></label>
+                                                                <input type="date" name="date" class="form-control"
+                                                                    id="date" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-3 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.warehouse %> <span class="text-red">*</span></label>
+                                                                <select class="form-control" name="warehouse_name"
+                                                                    id="warehouse_name" required>
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% warehouse.forEach((warehouse)=> { %>
+                                                                        <option value="<%= warehouse.name %>">
+                                                                            <%= warehouse.name %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group" id="addproduct">
+                                                                <!-- ajax -->
+                                                                <label for="invoice_no"><%= language.products %>  <span
+                                                                    class="text-red">*</span></label>
+                                                                <select class="add_sale_product" name="product" id="single-select" required>
+                                                                        <option value=""></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-xl-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table primary-table-bordered">
+                                                                <thead class="thead-primary">
+                                                                    <tr>
+                                                                        <th scope="col"><%= language.name %> </th>
+                                                                        <th scope="col"><%= language.in_stock %> </th>
+                                                                        <th scope="col"><%= language.quantity %> <span class="text-red">*</span></th>
+                                                                        <th scope="col"><%= language.price %> <span class="text-red">*</span></th>
+                                                                        <th scope="col"><%= language.total %> </th>
+                                                                        <th scope="col"><%= language.action %> </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblPage">
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-8 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label for="note"><%= language.note %> </label>
+                                                                <input type="text" class="form-control"
+                                                                    placeholder="note" id="note" name="note">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4 col-sm-6">
+                                                            <div class="row">
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="required"><%= language.total_price %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" readonly
+                                                                                class="form-control total_price"
+                                                                                id="sale_total_price" step="0.01" value="0"
+                                                                                name="total_price">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label for="discount"><%= language.discount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="discount"
+                                                                                class="form-control all_sales"
+                                                                                value="0" step="0.01" id="sale_discount" min="0">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label><%= language.receivable_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" readonly
+                                                                                name="receivable_amount" value="0"
+                                                                                class="form-control" step="0.01"
+                                                                                id="sale_receivable_amount">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group d-none">
+                                                                        <label><%= language.received_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="received_amount"
+                                                                                value="0" class="form-control" step="0.01"
+                                                                                id="sale_received_amount">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12">
+                                                                    <div class="form-group d-none">
+                                                                        <label><%= language.due_amount %> </label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text"><%= master_shop[0].currency %></span>
+                                                                            <input type="number" name="due_amount"
+                                                                                value="0" class="form-control" step="0.01"
+                                                                                id="sale_due_amount">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <button class="btn btn-primary" type="submit"
+                                                            id="submit"><%= language.submit %> </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--**********************************
+            Content body end
+        ***********************************-->
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!-- start Toastr -->
+    <%- include('./partials/toastr'); -%>
+        <!-- End Toastr -->
+
+        <!--**********************************
+        Scripts
+    ***********************************-->
+        <%- include('./partials/script'); -%>
+
+            <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head'); -%>
+
+</head>
+
+<body>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <%- include('./partials/header_logo'); -%>
+
+            <!--**********************************
+            Nav header end
+        ***********************************-->
+
+            <!--**********************************
+            Header start
+        ***********************************-->
+            <%- include('./partials/header',{titel: language.adjustment}); -%>
+
+                <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+                <!--**********************************
+            Sidebar start
+        ***********************************-->
+                <%- include('./partials/sidebar'); -%>
+
+                    <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+                    <!--**********************************
+            Content body start
+        ***********************************-->
+                    <div class="content-body">
+                        <div class="container-fluid">
+
+                            <!-- row -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title"><%= language.edit_adjustment %> </h4>
+                                            <button type="button" class="btn btn-rounded btn-outline-info"
+                                                onclick="history.back()"><i class="la la-undo"></i> <%= language.go_back %> </button>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="form-validation">
+
+                                                <form class="needs-validation" action="/adjustment/view/<%= adjustment._id %>"
+                                                    method="post" id="form">
+
+                                                    <div class="row">
+
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label for="warehouse_name"><%= language.warehouse %>  </label>
+                                                                <input type="text" name="warehouse_name" class="form-control" id="adjustment_warehouse_name" value="<%= adjustment.warehouse_name %>" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-6">
+                                                            <div class="form-group">
+                                                                <label for="invoice_no"><%= language.date %> </label>
+                                                                <input type="date" name="date" class="form-control"
+                                                                    id="date" value="<%= adjustment.date %>" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-xl-12">
+                                                            <div class="form-group" id="adjustment_edit_product">
+                                                                <label for="invoice_no"><%= language.products %>  </label>
+                                                                <select class="edit_adjustment_product" name="product" id="single-select">
+                                                                    <option value selected disabled>Select One</option>
+                                                                    <% warehouse_name.forEach((warehouse_name)=> { %>
+                                                                        <option value="<%= warehouse_name._id %>">
+                                                                            <%= warehouse_name._id %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                         
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="table-responsive">
+                                                            <table class="table primary-table-bordered">
+                                                                <thead class="thead-primary">
+                                                                    <tr>
+                                                                        <th scope="col"><%= language.name %> </th>
+                                                                        <th scope="col"><%= language.current_stock %> </th>
+                                                                        <th scope="col"><%= language.stock_after_adjust %> </th>
+                                                                        <th scope="col"><%= language.adjust_qty %> <span class="text-red">*</span></th>
+                                                                        <th scope="col"><%= language.type %> <span class="text-red">*</span></th>
+                                                                        <th scope="col"><%= language.action %> </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblPage">
+                                                                    <% adjustment.product.forEach((adjustment)=> { %>
+
+                                                                    <tr>
+                                                                        <td class="align-top">
+                                                                            <input type="text" name="product_name"
+                                                                            id="product_name" class="form-control edit_product_name" value="<%= adjustment.product_name %>" required readonly>
+                                                                        </td>
+                                                                        
+                                                                        <% unit.forEach((unit)=> { %>
+                                                                        <% if (unit.name == adjustment.product_name) { %>
+
+                                                                            <% stock.forEach((stock)=> { %>
+                                                                                <% if (adjustment.product_name == stock._id) { %>
+                                                                                <td class="align-top">
+                                                                                    <div class="input-group">
+                                                                                        <input type="number" name="stock" class="form-control stock" id="stock" value="<%= stock.product_stock %>" readonly> 
+                                                                                        <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                    </div>
+                                                                                </td>
+                                                                                
+                                                                                <td class="align-top">
+                                                                                    <div class="input-group">
+                                                                                        <input type="number" name="stock_adjust" class="form-control stock_adjust" id="stock_adjust" value="<%= stock.product_stock %>" readonly> 
+                                                                                        <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                    </div>
+                                                                                    <p class="error text-red" name="error"></p>
+                                                                                </td>
+                                                                                <% } %>
+                                                                            <% }) %>
+                                                                        
+                                                                            <td class="align-top">
+                                                                                <div class="input-group">
+                                                                                    <input type="number" name="adjust_qty" class="form-control adjust_qty" id="edit_adjust_qty" value="<%= adjustment.adjust_qty %>" min="0" required> 
+                                                                                    <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="d-none">
+                                                                                <div class="input-group">
+                                                                                    <input type="number" name="hidden_adjust_qty" class="form-control hidden_adjust_qty" id="hidden_adjust_qty" value="<%= adjustment.adjust_qty %>"> 
+                                                                                    <span class="input-group-text"><%= unit.unit %></span> 
+                                                                                </div>
+                                                                            </td>
+
+                                                                        <% } %>
+                                                                        <% }) %>
+        
+                                                                        <td class="align-top">
+                                                                            <select class="form-control adjustment_product" name="type" id="adjustment_type_edit" >
+                                                                                <option <%=adjustment.type=="Subtract" ? "selected" : "" %> >Subtract</option>
+
+                                                                                <option <%=adjustment.type=="Add" ? "selected" : "" %> >Add</option>
+                                                                            </select>
+                                                                        </td>
+
+                                                                        <td class="d-none">
+                                                                            <select class="form-control hidden_adjustment_product" name="hidden_type" id="hidden_adjustment_type_edit" >
+                                                                                <option <%=adjustment.type=="Subtract" ? "selected" : "" %> >Subtract</option>
+
+                                                                                <option <%=adjustment.type=="Add" ? "selected" : "" %> >Add</option>
+                                                                            </select>
+                                                                        </td>
+
+                                                                        <td class="align-top"> 
+                                                                            <button type="button" class="btn btn-square btn-outline-danger" id="remove" disabled>Remove</button> 
+                                                                        </td>
+
+                                                                    </tr>
+
+                                                                    <% }) %>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                   
+                                                    <div class="col-12 mb-5">
+                                                        <div class="form-group">
+                                                            <label for="note"><%= language.note %> </label>
+                                                            <input type="text" class="form-control"
+                                                                placeholder="note" id="note" value="<%= adjustment.note %>" name="note">
+                                                        </div>
+                                                    </div>
+
+                                                 
+
+                                                    <div class="row">
+                                                        <button class="btn btn-primary" type="submit"
+                                                            id="submit"><%= language.submit %> </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--**********************************
+            Content body end
+        ***********************************-->
+
+                    <!--**********************************
+            Footer start
+        ***********************************-->
+                    <%- include('./partials/footer'); -%>
+
+                        <!--**********************************
+            Footer end
+        ***********************************-->
+
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!-- start Toastr -->
+    <%- include('./partials/toastr'); -%>
+        <!-- End Toastr -->
+
+        <!--**********************************
+        Scripts
+    ***********************************-->
+        <%- include('./partials/script'); -%>
+
+            <!--**********************************
+        Scripts end
+    ***********************************-->
+</body>
+
+</html>
